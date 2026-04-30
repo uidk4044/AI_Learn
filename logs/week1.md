@@ -161,7 +161,7 @@ Next Goal:
 
 （你自己判断，不用保证正确）
 
-- 理解dockerfile的结构
+- 通过github actions实现CI
 
 ---
 
@@ -193,4 +193,4 @@ Problem:
 
 Next Goal:
 （复制 Next Goal）
-- 理解dockerfile的结构
+- 通过github actions实现CI
