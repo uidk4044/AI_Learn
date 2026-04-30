@@ -194,3 +194,91 @@ Problem:
 Next Goal:
 （复制 Next Goal）
 - 通过github actions实现CI
+
+
+## 🧭 Meta Info（方向锚点）
+
+* Track: DevOps (3-month plan)
+* Phase: Month 1 - CI/CD + Docker
+* Day: Day 3
+* Date: 2026-04-30
+* Repo: https://github.com/uidk4044/AI_Learn
+
+---
+
+## 🚧 Current Status（当前系统能力 - 最关键）
+
+当前你的系统“已经能做到什么”：
+
+* [x] CI可运行
+* [x] 自动构建 Docker 镜像
+* [ ] 自动部署（如果有）
+* [ ] 已部署到 Kubernetes
+
+## 👉 如果以上不够，请补充：
+
+---
+
+## ✅ Done Today（今天完成）
+
+* ✅ push代码触发github action，自动更新docker hub仓库
+* ✅ 使用docker-compose命令从单服务扩展到了多服务系统
+---
+
+## ❌ Problems / Blockers（卡点）
+
+（⚠️ 必须尽量贴原始报错）
+
+```bash
+# 粘贴错误日志
+```
+
+---
+
+## 💡 Notes / Learnings（关键收获）
+
+（只写“理解”，不要写流水账）
+
+- 通过docker.yml设置github action执行的动作
+- 从单独的服务扩展到多个服务系统
+
+---
+
+## 🎯 Next Goal（下一步）
+
+（你自己判断，不用保证正确）
+
+- Flask 成功连接 PostgreSQL
+- 能执行一次简单查询（验证连接）
+
+---
+
+# ===============================
+
+# 🤖 COPY BELOW FOR CHATGPT 👇
+
+# ===============================
+
+Track: DevOps (3-month plan)
+Phase: Month 1 - Docker （例如 CI/CD / Docker / K8s）
+
+Day: 3
+
+Working:
+（当前系统已经能做到什么，例如：Docker build OK / 本地服务可跑）
+- 本地Flask服务可运行（http://localhost:3000）
+- Docker image 可构建并运行
+- CI 可自动 build 并 push 到 Docker Hub
+- docker-compose 可启动多服务（Flask + PostgreSQL）
+Done:
+（复制 Done Today）
+* ✅ push代码触发github action，自动更新docker hub仓库
+* ✅ 使用docker-compose命令从单服务扩展到了多服务系统
+
+Problem:
+（复制 Problems + 错误日志）
+
+Next Goal:
+（复制 Next Goal）
+- Flask 成功连接 PostgreSQL
+- 能执行一次简单查询（验证连接）

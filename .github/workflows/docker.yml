@@ -24,4 +24,4 @@ jobs:
         with:
           context: ./projects/project1-ci-cd/app
           push: true
-          tags: xiaoxingan99/myapp:latest
+          tags: xiaoxingan99/myapp:${{ github.sha }}
