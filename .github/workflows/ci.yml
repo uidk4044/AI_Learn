@@ -20,8 +20,12 @@ jobs:
 
       - name: Build image
         run: |
-          docker build -t xiaoxingan99/myapp:latest ./projects/project1-ci-cd/app
-
+          IMAGE_TAG=${GITHUB_SHA::7}
+          docker build -t xiaoxingan99/myapp:$IMAGE_TAG ./projects/project1-ci-cd/app
+          docker tag xiaoxingan99/myapp:$IMAGE_TAG xiaoxingan99/myapp:latest
+  
       - name: Push image
         run: |
+          IMAGE_TAG=${GITHUB_SHA::7}
+          docker push xiaoxingan99/myapp:$IMAGE_TAG
           docker push xiaoxingan99/myapp:latest
