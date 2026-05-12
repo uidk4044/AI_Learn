@@ -1,7 +1,8 @@
 services:
   web:
-    # image: xiaoxingan99/myapp
-    build: ./projects/project1-ci-cd/app
+    # image: xiaoxingan99/myapp:d05c63c643e6eafdf564661114e3c92f7377aa35
+    image: xiaoxingan99/myapp:latest
+    # build: ./projects/project1-ci-cd/app
     ports:
       - "3000:3000"
     depends_on:

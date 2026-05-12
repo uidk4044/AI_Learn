@@ -29,7 +29,7 @@ def check_db():
 
 @app.route("/")
 def home():
-    return "Hello, DevOps with Docker Compose!"
+    return "CD TEST V1"
 
 
 if __name__ == "__main__":

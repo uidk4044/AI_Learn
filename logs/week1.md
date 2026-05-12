@@ -282,3 +282,100 @@ Next Goal:
 （复制 Next Goal）
 - Flask 成功连接 PostgreSQL
 - 能执行一次简单查询（验证连接）
+
+## 🧭 Meta Info（方向锚点）
+
+* Track: DevOps (3-month plan)
+* Phase: Month 1 - CI/CD + Docker
+* Day: Day 4
+* Date: 2026-05-06
+* Repo: https://github.com/uidk4044/AI_Learn
+
+---
+
+## 🚧 Current Status（当前系统能力 - 最关键）
+
+当前你的系统“已经能做到什么”：
+
+* [x] push 触发 GitHub Actions 自动构建 Docker 镜像
+* [x] Docker Hub 支持 commit SHA 版本化 + latest 标签
+* [x] CI/CD pipeline 已稳定运行（build → push → tag）
+* [ ] 自动部署（如果有）
+* [ ] 已部署到 Kubernetes
+
+## 👉 如果以上不够，请补充：
+
+---
+
+## ✅ Done Today（今天完成）
+
+* ✅ 解决了“始终无法获取最新代码”的问题
+* 👉 原因是之前误用 Docker Hub image，而不是本地 build context
+* ✅ 完成 Docker image 版本化（使用 commit id）
+* ✅ 理解 latest vs SHA tag 的区别（latest 是指针，SHA 是不可变版本）
+
+---
+
+## ❌ Problems / Blockers（卡点）
+
+（⚠️ 必须尽量贴原始报错）
+
+```bash
+# 粘贴错误日志
+```
+
+---
+
+## 💡 Notes / Learnings（关键收获）
+
+（只写“理解”，不要写流水账）
+
+- docker-compose.yml指定了构建或者image的来源
+
+---
+
+## 🎯 Next Goal（下一步）
+
+（你自己判断，不用保证正确）
+
+- 学习 Docker rollback（回滚到历史版本）
+- 如何找到旧 image tag
+- 如何用 docker run / compose 指定版本
+- 如何模拟“生产回滚”
+- 理解 release flow：dev → staging → prod
+
+---
+
+# ===============================
+
+# 🤖 COPY BELOW FOR CHATGPT 👇
+
+# ===============================
+
+Track: DevOps (3-month plan)
+Phase: Month 1 - Docker （例如 CI/CD / Docker / K8s）
+
+Day: 4
+
+Working:
+（当前系统已经能做到什么，例如：Docker build OK / 本地服务可跑）
+- push 触发 GitHub Actions 自动构建 Docker 镜像
+- Docker Hub 支持 commit SHA 版本化 + latest 标签
+- CI/CD pipeline 已稳定运行（build → push → tag）
+
+Done:
+（复制 Done Today）
+* ✅ 解决了“始终无法获取最新代码”的问题
+* 👉 原因是之前误用 Docker Hub image，而不是本地 build context
+* ✅ 完成 Docker image 版本化（使用 commit id）
+* ✅ 理解 latest vs SHA tag 的区别（latest 是指针，SHA 是不可变版本）
+Problem:
+（复制 Problems + 错误日志）
+
+Next Goal:
+（复制 Next Goal）
+- 学习 Docker rollback（回滚到历史版本）
+- 如何找到旧 image tag
+- 如何用 docker run / compose 指定版本
+- 如何模拟“生产回滚”
+- 理解 release flow：dev → staging → prod
