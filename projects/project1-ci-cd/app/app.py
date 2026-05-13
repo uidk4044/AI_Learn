@@ -34,10 +34,13 @@ def home():
     version = os.getenv("BUILD_VERSION", "unknown")
 
     return f"""
-    CD TEST V1
+    CD TEST
     BUILD VERSION: {version}
     """
 
+@app.route("/health")
+def health():
+    return "OK"
 
 if __name__ == "__main__":
     # 👉 启动时尝试连接数据库（当前阶段）
