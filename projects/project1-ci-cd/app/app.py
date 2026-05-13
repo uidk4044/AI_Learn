@@ -27,9 +27,16 @@ def check_db():
         print("❌ DB connection failed:", e)
 
 
+import os
+
 @app.route("/")
 def home():
-    return "CD TEST V1"
+    version = os.getenv("BUILD_VERSION", "unknown")
+
+    return f"""
+    CD TEST V1
+    BUILD VERSION: {version}
+    """
 
 
 if __name__ == "__main__":

@@ -4,6 +4,8 @@ services:
     # image: xiaoxingan99/myapp:latest
     # build: ./projects/project1-ci-cd/app
     image: xiaoxingan99/myapp:${TAG}
+    environment:
+      - BUILD_VERSION=${TAG}    
     ports:
       - "3000:3000"
     depends_on:
