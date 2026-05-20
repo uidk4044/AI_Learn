@@ -51,10 +51,17 @@ def db_test():
 
 @app.route("/db")
 def db():
-    conn = psycopg2.connect(os.getenv("DATABASE_URL"))
-    cur = conn.cursor()
-    cur.execute("SELECT 1;")
-    return str(cur.fetchone())
+    try:
+        conn = psycopg2.connect(os.getenv("DATABASE_URL"))
+        cur = conn.cursor()
+        cur.execute("SELECT 1;")
+        result = cur.fetchone()
+        cur.close()
+        conn.close()
+        return str(result)
+    except Exception as e:
+        return str(e), 500
+    #return str(cur.fetchone())
 
 
 if __name__ == "__main__":

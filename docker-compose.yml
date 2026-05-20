@@ -6,7 +6,7 @@ services:
     image: xiaoxingan99/myapp:${TAG}
     environment:
       - BUILD_VERSION=${TAG}    
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/app
+      - DATABASE_URL=postgresql://user:password@db:5432/mydb
     #ports:
     #  - "3000:3000"
     expose:
