@@ -49,6 +49,14 @@ def health():
 def db_test():
     return os.getenv("DATABASE_URL")
 
+@app.route("/db")
+def db():
+    conn = psycopg2.connect(os.getenv("DATABASE_URL"))
+    cur = conn.cursor()
+    cur.execute("SELECT 1;")
+    return str(cur.fetchone())
+
+
 if __name__ == "__main__":
     # 👉 启动时尝试连接数据库（当前阶段）
     check_db()
