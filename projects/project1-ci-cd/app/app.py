@@ -58,7 +58,8 @@ def db():
         result = cur.fetchone()
         cur.close()
         conn.close()
-        return str(result)
+        # return str(result)
+        return f"{result} from {socket.gethostname()}"
     except Exception as e:
         return str(e), 500
     #return str(cur.fetchone())
