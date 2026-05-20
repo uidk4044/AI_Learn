@@ -6,11 +6,21 @@ services:
     image: xiaoxingan99/myapp:${TAG}
     environment:
       - BUILD_VERSION=${TAG}    
-    ports:
-      - "3000:3000"
+    #ports:
+    #  - "3000:3000"
+    expose:
+      - "3000"
     depends_on:
       - db
-
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "3000:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
+      
   db:
     image: postgres:14
     environment:

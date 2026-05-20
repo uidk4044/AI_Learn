@@ -28,15 +28,17 @@ def check_db():
 
 
 import os
+import socket
 
 @app.route("/")
 def home():
     version = os.getenv("BUILD_VERSION", "unknown")
 
-    return f"""
-    CD TEST
-    BUILD VERSION: {version}
-    """
+#    return f"""
+#    CD TEST
+#    BUILD VERSION: {version}
+#    """
+    return f"{socket.gethostname()}"
 
 @app.route("/health")
 def health():
