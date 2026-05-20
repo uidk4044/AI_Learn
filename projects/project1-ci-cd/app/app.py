@@ -39,10 +39,15 @@ def home():
 #    BUILD VERSION: {version}
 #    """
     return f"{socket.gethostname()}"
+    
 
 @app.route("/health")
 def health():
     return "OK"
+
+@app.route("/db-test")
+def db_test():
+    return os.getenv("DATABASE_URL")
 
 if __name__ == "__main__":
     # 👉 启动时尝试连接数据库（当前阶段）
