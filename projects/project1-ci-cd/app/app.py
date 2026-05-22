@@ -51,14 +51,18 @@ def db_test():
 
 @app.route("/db")
 def db():
-    time.sleep(5)
+    instance = os.getenv("INSTANCE")
+    slow = os.getenv("SLOW")
+
+    if slow == "true":
+        time.sleep(5)
 
     conn = psycopg2.connect(os.getenv("DATABASE_URL"))
     cur = conn.cursor()
     cur.execute("SELECT 1;")
     result = cur.fetchone()
 
-    return f"{result} from {socket.gethostname()}"
+    return f"{result} from {instance}"
 
 
 if __name__ == "__main__":
