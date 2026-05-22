@@ -51,25 +51,14 @@ def db_test():
 
 @app.route("/db")
 def db():
+    time.sleep(5)
 
-    hostname = socket.gethostname()
+    conn = psycopg2.connect(os.getenv("DATABASE_URL"))
+    cur = conn.cursor()
+    cur.execute("SELECT 1;")
+    result = cur.fetchone()
 
-    if hostname.endswith("1"):
-        time.sleep(5)
-    
-    try:
-        conn = psycopg2.connect(os.getenv("DATABASE_URL"))
-        cur = conn.cursor()
-        cur.execute("SELECT 1;")
-        result = cur.fetchone()
-        cur.close()
-        conn.close()
-        # return str(result)
-        # return f"{result} from {socket.gethostname()}"
-        return f"{result} from {hostname}"
-    except Exception as e:
-        return str(e), 500
-    #return str(cur.fetchone())
+    return f"{result} from {socket.gethostname()}"
 
 
 if __name__ == "__main__":
