@@ -20,8 +20,10 @@ jobs:
 
       - name: Build image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }} .
+          IMAGE_TAG=${GITHUB_SHA::7}
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/myapp:$IMAGE_TAG ./projects/project1-ci-cd/app
 
       - name: Push image
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/myapp:${{ github.sha }}
+          IMAGE_TAG=${GITHUB_SHA::7}
+          docker push ${{ secrets.DOCKER_USERNAME }}/myapp:$IMAGE_TAG
