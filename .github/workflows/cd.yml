@@ -1,4 +1,4 @@
-name: CD - Deploy Local
+name: CD - Deploy Pipeline
 
 on:
   workflow_run:
@@ -6,34 +6,39 @@ on:
     types:
       - completed
 
+  workflow_dispatch: {}
+  
 jobs:
-  deploy:
+
+  deploy-dev:
+    if: github.event_name == 'workflow_run'
     runs-on: self-hosted
-
-    defaults:
-      run:
-        shell: powershell
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - run: |
+          $TAG = $env:GITHUB_SHA.Substring(0,7)
+          docker pull xiaoxingan99/myapp:$TAG
+          $env:TAG=$TAG
+          docker compose up -d
 
-      - name: Deploy
-        run: |
-          $IMAGE_TAG = $env:GITHUB_SHA.Substring(0,7)
+  deploy-prod:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: self-hosted
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          $TAG = $env:GITHUB_SHA.Substring(0,7)
+          docker pull xiaoxingan99/myapp:$TAG
+          $env:TAG=$TAG
+          docker compose up -d
 
-          docker pull xiaoxingan99/myapp:$IMAGE_TAG
-
-          $env:TAG = $IMAGE_TAG
-
-          docker compose -f .\docker-compose.yml up -d
-
-      - name: Health Check
-        run: |
-          $response = Invoke-WebRequest http://localhost:8080/health -UseBasicParsing
-
-          if ($response.StatusCode -ne 200) {
-            throw "Health check failed"
-          }
-
-          Write-Host "Health check OK"
+  rollback:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: self-hosted
+    steps:
+      - run: |
+          $LAST = Get-Content .last_deploy
+          docker pull xiaoxingan99/myapp:$LAST
+          $env:TAG=$LAST
+          docker compose up -d  
