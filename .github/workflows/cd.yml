@@ -12,7 +12,7 @@ jobs:
 
     defaults:
       run:
-        shell: pwsh   # ⭐关键：禁止 bash
+        shell: powershell
 
     steps:
       - name: Deploy
@@ -22,6 +22,7 @@ jobs:
           docker pull xiaoxingan99/myapp:$IMAGE_TAG
 
           $env:TAG = $IMAGE_TAG
+
           docker compose -f .\projects\project1-ci-cd\app\docker-compose.yml up -d
 
           curl http://localhost:8080/health
