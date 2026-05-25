@@ -15,6 +15,9 @@ jobs:
         shell: powershell
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Deploy
         run: |
           $IMAGE_TAG = $env:GITHUB_SHA.Substring(0,7)
