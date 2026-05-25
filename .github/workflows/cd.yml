@@ -1,4 +1,4 @@
-name: CD - Deploy Pipeline
+name: CD - Deploy Production
 
 on:
   workflow_run:
@@ -6,40 +6,40 @@ on:
     types:
       - completed
 
-  workflow_dispatch: {}
-  
 jobs:
-
-  deploy-dev:
-    if: github.event_name == 'workflow_run'
+  deploy:
     runs-on: self-hosted
-    steps:
-      - uses: actions/checkout@v4
-      - run: |
-          $TAG = $env:GITHUB_SHA.Substring(0,7)
-          docker pull xiaoxingan99/myapp:$TAG
-          $env:TAG=$TAG
-          docker compose up -d
 
-  deploy-prod:
-    if: github.event_name == 'workflow_dispatch'
-    runs-on: self-hosted
-    environment: production
-    steps:
-      - uses: actions/checkout@v4
-      - run: |
-          $TAG = $env:GITHUB_SHA.Substring(0,7)
-          docker pull xiaoxingan99/myapp:$TAG
-          $env:TAG=$TAG
-          docker compose up -d
+    # ⭐关键：触发 GitHub approval gate
+    environment:
+      name: production
 
-  rollback:
-    if: github.event_name == 'workflow_dispatch'
-    runs-on: self-hosted
+    defaults:
+      run:
+        shell: powershell
+
     steps:
-      - run: |
-          $LAST = Get-Content .last_deploy
-          docker pull xiaoxingan99/myapp:$LAST
-          $env:TAG=$LAST
-          docker compose up -d  
-          
+      # 1. checkout（可选，但保留规范）
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. deploy（核心）
+      - name: Deploy
+        run: |
+          $IMAGE_TAG = $env:GITHUB_SHA.Substring(0,7)
+
+          Write-Host "Deploying image: $IMAGE_TAG"
+
+          docker pull xiaoxingan99/myapp:$IMAGE_TAG
+
+          $env:TAG = $IMAGE_TAG
+
+          docker compose -f .\docker-compose.yml up -d
+
+          # 保存版本（用于 rollback）
+          Set-Content -Path .last_deploy -Value $IMAGE_TAG
+
+      # 3. health check（验证）
+      - name: Health Check
+        run: |
+          Invoke-WebRequest http://localhost:8080/health -UseBasicParsing
