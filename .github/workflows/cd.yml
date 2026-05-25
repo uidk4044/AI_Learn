@@ -28,4 +28,12 @@ jobs:
 
           docker compose -f .\docker-compose.yml up -d
 
-          curl http://localhost:8080/health
+      - name: Health Check
+        run: |
+          $response = Invoke-WebRequest http://localhost:8080/health -UseBasicParsing
+
+          if ($response.StatusCode -ne 200) {
+            throw "Health check failed"
+          }
+
+          Write-Host "Health check OK"
