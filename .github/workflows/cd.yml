@@ -42,3 +42,4 @@ jobs:
           docker pull xiaoxingan99/myapp:$LAST
           $env:TAG=$LAST
           docker compose up -d  
+          
