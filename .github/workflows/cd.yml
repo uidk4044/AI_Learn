@@ -1,4 +1,4 @@
-name: CD - Deploy
+name: CD - Deploy Local
 
 on:
   workflow_run:
@@ -8,23 +8,16 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.WSL_HOST }}
-          username: ${{ secrets.WSL_USER }}
-          password: ${{ secrets.WSL_PASSWORD }}
-          script: |
-            set -e
+      - name: Pull & Deploy
+        run: |
+          IMAGE_TAG=${GITHUB_SHA::7}
 
-            IMAGE_TAG=$(echo $GITHUB_SHA | cut -c1-7)
+          docker pull ${{ secrets.DOCKER_USERNAME }}/myapp:$IMAGE_TAG
 
-            docker pull xiaoxingan99/myapp:$IMAGE_TAG
+          export TAG=$IMAGE_TAG
+          docker compose -f ./projects/project1-ci-cd/app/docker-compose.yml up -d
 
-            export TAG=$IMAGE_TAG
-            docker compose up -d
-
-            curl -f http://localhost:8080/health
+          curl -f http://localhost:8080/health
