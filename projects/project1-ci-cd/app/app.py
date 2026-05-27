@@ -41,13 +41,13 @@ def home():
     return f"{socket.gethostname()}"
     
 
-# @app.route("/health")
-# def health():
-#     return "OK"
-
 @app.route("/health")
 def health():
-    return "error", 500
+    return "OK"
+
+# @app.route("/health")
+# def health():
+#     return "error", 500
     
 
 @app.route("/db-test")
