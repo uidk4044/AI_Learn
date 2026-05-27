@@ -12,17 +12,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Login DockerHub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      # ⭐ Docker login（必须）
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build image
+      - name: Generate Tag
         run: |
-          IMAGE_TAG=${GITHUB_SHA::7}
-          docker build -t xiaoxingan99/myapp:$IMAGE_TAG ./projects/project1-ci-cd/app
-          docker tag xiaoxingan99/myapp:$IMAGE_TAG xiaoxingan99/myapp:latest
+          echo "IMAGE_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
-      - name: Push image
+      - name: Build Image
         run: |
-          IMAGE_TAG=${GITHUB_SHA::7}
-          docker push xiaoxingan99/myapp:$IMAGE_TAG
-          docker push xiaoxingan99/myapp:latest
+          docker build -t xiaoxingan99/myapp:${{ env.IMAGE_TAG }} ./projects/project1-ci-cd/app
+
+      - name: Push Image
+        run: |
+          docker push xiaoxingan99/myapp:${{ env.IMAGE_TAG }}
+
+      # ⭐ release tag（可选但推荐）
+      - name: Create Git Tag
+        run: |
+          git tag v${GITHUB_SHA::7}
+          git push origin v${GITHUB_SHA::7}

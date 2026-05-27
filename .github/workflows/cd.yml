@@ -3,8 +3,7 @@ name: CD - Deploy Production
 on:
   workflow_run:
     workflows: ["CI - Build & Push"]
-    types:
-      - completed
+    types: [completed]
 
 jobs:
   deploy:
@@ -18,68 +17,24 @@ jobs:
         shell: powershell
 
     steps:
-      # 1. checkout
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. 获取新版本tag
-      - name: Prepare Version
+      - name: Set Image Tag
         run: |
           $IMAGE_TAG = $env:GITHUB_SHA.Substring(0,7)
-
           echo "IMAGE_TAG=$IMAGE_TAG" >> $env:GITHUB_ENV
 
-      # 3. 保存当前稳定版本
-      - name: Save Current Stable
-        run: |
-          if (Test-Path .current_stable) {
-            Copy-Item .current_stable .current_previous -Force
-          }
-
-      # 4. 拉取新镜像
-      - name: Pull New Image
+      - name: Pull Image
         run: |
           docker pull xiaoxingan99/myapp:${env:IMAGE_TAG}
 
-      # 5. 部署新版本
-      - name: Deploy New Version
+      - name: Deploy
         run: |
-          $env:TAG = "${env:IMAGE_TAG}"
-
+          $env:TAG = $env:IMAGE_TAG
           docker compose up -d --force-recreate
 
-      # 6. Health Check
       - name: Health Check
         run: |
           Start-Sleep -Seconds 10
-
-          Invoke-WebRequest http://localhost:8080/health -UseBasicParsing
-
-      # 7. 更新稳定版本（只有成功才执行）
-      - name: Update Stable Version
-        if: success()
-        run: |
-          Set-Content -Path .current_stable -Value "${env:IMAGE_TAG}"
-
-      # 8. 自动回滚（失败时）
-      - name: Rollback
-        if: failure()
-        run: |
-          Write-Host "Health check failed. Rolling back..."
-
-          if (!(Test-Path .current_previous)) {
-            Write-Host "No rollback version found!"
-            exit 1
-          }
-
-          $ROLLBACK_TAG = Get-Content .current_previous
-
-          Write-Host "Rolling back to: $ROLLBACK_TAG"
-
-          docker pull xiaoxingan99/myapp:$ROLLBACK_TAG
-
-          $env:TAG = $ROLLBACK_TAG
-
-          docker compose up -d --force-recreate
-
           Invoke-WebRequest http://localhost:8080/health -UseBasicParsing
