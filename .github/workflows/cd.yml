@@ -38,3 +38,17 @@ jobs:
         run: |
           Start-Sleep -Seconds 10
           Invoke-WebRequest http://localhost:8080/health -UseBasicParsing
+          
+      - name: Switch Traffic to Green
+        run: |
+          bash scripts/switch.sh green          
+          
+  rollback:
+    runs-on: self-hosted
+  
+    if: failure()
+  
+    steps:
+      - name: Switch back to Blue
+        run: |
+          bash scripts/switch.sh blue          

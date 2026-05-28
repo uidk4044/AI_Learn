@@ -1,46 +1,51 @@
 services:
-  web1:
-    image: xiaoxingan99/myapp:${TAG}
+
+  app-blue:
+    image: xiaoxingan99/myapp:${TAG:-latest}
+    container_name: app-blue
     environment:
-      - BUILD_VERSION=${TAG}
-      - DATABASE_URL=postgresql://user:password@db:5432/mydb
-      - INSTANCE=web1
-      - SLOW=true
-  
-    expose:
-      - "3000"
-  
+      - COLOR=blue
+      - DB_HOST=db
+      - DB_USER=myuser
+      - DB_PASSWORD=mypassword
+      - DB_NAME=mydb
+    ports:
+      - "3001:3000"
     depends_on:
       - db
-  
-  web2:
-    image: xiaoxingan99/myapp:${TAG}
+
+  app-green:
+    image: xiaoxingan99/myapp:${TAG:-latest}
+    container_name: app-green
     environment:
-      - BUILD_VERSION=${TAG}
-      - DATABASE_URL=postgresql://user:password@db:5432/mydb
-      - INSTANCE=web2
-      - SLOW=false
-  
-    expose:
-      - "3000"
-  
+      - COLOR=green
+      - DB_HOST=db
+      - DB_USER=myuser
+      - DB_PASSWORD=mypassword
+      - DB_NAME=mydb
+    ports:
+      - "3002:3000"
     depends_on:
       - db
+
   nginx:
     image: nginx:latest
+    container_name: nginx
     ports:
       - "8080:80"
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/default.conf:/etc/nginx/nginx.conf:ro
+   
     depends_on:
-      - web1
-      - web2
-      
+      - app-blue
+      - app-green
+
   db:
     image: postgres:15
+    container_name: postgres-db
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
       POSTGRES_DB: mydb
     ports:
-      - "5432:5432"      
+      - "5432:5432"
